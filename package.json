@@ -1,0 +1,32 @@
+{
+  "name": "babel-plugin-remove-test-id",
+  "version": "1.0.0",
+  "description": "Babel plugin to remove test-id (or any other props) from JSXAttirbutes, object properties, function calls, and file imports",
+  "main": "index.js",
+  "scripts": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mykyta-rusyn/babel-plugin-remove-test-id.git"
+  },
+  "bugs": {
+    "url": "https://github.com/mykyta-rusyn/babel-plugin-remove-test-id/issues",
+    "email": "nikrus1275@gmail.com"
+  },
+  "keywords": [
+    "babel",
+    "plugin",
+    "remove",
+    "test",
+    "id",
+    "testing",
+    "jsx",
+    "react",
+    "react-native"
+  ],
+  "license": "MIT",
+  "homepage": "https://github.com/mykyta-rusyn/babel-plugin-remove-test-id#readme",
+  "author": "Mykyta Rusyn <nikrus1275@gmail.com> (https://github.com/mykyta-rusyn)",
+  "peerDependencies": {
+    "@babel/core": "^7.0.0"
+  }
+}
