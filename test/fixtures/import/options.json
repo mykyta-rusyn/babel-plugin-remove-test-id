@@ -1,0 +1,5 @@
+{
+  "pluginOptions": {
+		"importFileNames": ["FileName1", "FileName2", "OtherFileName"]
+	}
+}

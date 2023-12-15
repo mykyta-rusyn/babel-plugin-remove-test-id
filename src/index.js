@@ -1,8 +1,8 @@
 const typesAttributes = {};
 const typesAttributeName = {
-  ImportDeclaration: 'importFileName',
-  MemberExpression: 'importName',
-  JSXOpeningElement: 'jsxAttributes',
+  ImportDeclaration: 'importFileNames',
+  MemberExpression: 'testIdObjects',
+  JSXAttribute: 'jSXAttributes',
   ObjectProperty: 'objectProperties',
 };
 
@@ -18,7 +18,9 @@ function getAttributes(attributes, type) {
   if (Array.isArray(attributes)) {
     if (
       attributes.length === 0 ||
-      attributes.filter(attr => typeof attr === 'string' && attr.trim()).length
+      attributes.length !== attributes.filter((attr) => 
+        typeof attr === 'string' && attr.trim()
+      ).length
     ) {
       return;
     }
@@ -46,8 +48,13 @@ function isChildren(node, path) {
   return true;
 }
 
-function inArray(array, value) {
-  return array.some(element => value.includes(element));
+function inArray(array, value, isImport = false) {
+  return array.some((element) => {
+    if (isImport) {
+      return value.includes(element);
+    }
+    return value === element
+  });
 }
 
 module.exports = () => {
@@ -83,7 +90,7 @@ module.exports = () => {
 
       if (
         isChildren(path, 'node.source.value') &&
-        inArray(attributes, path.node.source.value)
+        inArray(attributes, path.node.source.value, true)
       ) {
         path.remove();
       }
@@ -99,11 +106,69 @@ module.exports = () => {
 
       if (
         isChildren(path, 'node.object.name') &&
+        isChildren(path, 'parent.type') &&
         inArray(attributes, path.node.object.name)
       ) {
-        path.replaceWithSourceString(undefined);
+        if (path.parent.type === 'CallExpression') {
+			    path.replaceWithSourceString(undefined)
+        } else {
+          path.remove()
+        }
       }
     },
+    Identifier(path, state) {
+      const attributes = getAttributes(
+        state.opts[typesAttributeName.MemberExpression],
+        'Identifier',
+      );
+      if (attributes === undefined) {
+        return;
+      }
+
+      if (
+        isChildren(path, 'node.name') &&
+        inArray(attributes, path.node.name) &&
+        isChildren(path, 'parent.type')
+      ) {
+        if (path.parent.type !== 'CallExpression') {
+          path.remove();
+        } else {
+          path.replaceWithSourceString(undefined)
+        }
+      }
+    },
+    JSXAttribute(path, state) {
+      const attributes = getAttributes(
+        state.opts[typesAttributeName.JSXAttribute],
+        'JSXAttribute',
+      );
+      if (attributes === undefined) {
+        return;
+      }
+
+      if (
+        isChildren(path, 'node.attributes') &&
+        inArray(attributes, path.node.name.name)
+      ) {
+        path.remove();
+      }
+    },
+    CallExpression(path, state) {
+      const attributes = getAttributes(
+        state.opts[typesAttributeName.CallExpression],
+        'CallExpression',
+      );
+      if (attributes === undefined) {
+        return;
+      }
+
+      if (
+        isChildren(path, 'path.node.callee.object.name') &&
+        inArray(attributes, path.node.callee.object.name)
+      ) {
+        path.remove()
+      }
+    }
   };
 
   return {

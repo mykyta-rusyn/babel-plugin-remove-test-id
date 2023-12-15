@@ -1,0 +1,5 @@
+{
+  "pluginOptions": {
+		"objectProperties": ["testID", "testIDActivity", "objectFromTestID"]
+	}
+}

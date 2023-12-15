@@ -1,8 +1,4 @@
-# babel-plugin-remove-test-id
-
-Remove specified jsx-attributes, file imports, object properties, function calls arguments from your production builds.
-
-Based on the [other plugin with the same idea](https://github.com/coderas/babel-plugin-jsx-remove-data-test-id.git), but here we got some preferences. Instead of removing specified attributes only from jsx code and object properties, you can remove all files with your `test-id` from bundle.
+another pluginother plugin with the same idea](https://github.com/coderas/babel-plugin-jsx-remove-data-test-id.git), here we have some preferences. Instead of removing specified attributes only from jsx code and object properties, you can remove all files with your `test-id` from the bundle.
 In most cases creating separate file help improve readability in our components and tests, and there is no reason why we should leave unnecessary files in bundles.
 
 ## Install
@@ -11,33 +7,34 @@ In most cases creating separate file help improve readability in our components 
 npm i --save-dev babel-plugin-remove-test-id 
 ```
 
-
 ## API Reference
 
-There are no default values, so you need to provide your custom for every type, what you want use.
-If option not provided this step skipping.
+There are no default values, so you need to provide your custom for every type, you want.
+If the option is not provided this step is skipped.
 
 ```javascript
 [
     'babel-plugin-jsx-remove-data-test-id',
     {
-        importFileName: 'file-with-test-ids',
-        importName: 'object-with-test-ids',
-        jsxAttributes: 'test-id-jsx-attrbiute',
+        importFileNames: 'file-with-test-ids',
+        testIdObjects: 'object-with-test-ids',
+        jsxAttributes: 'test-id-jsx-attribute',
         objectProperties: 'test-id-property',
     }
 ]
 ```
 | Parameter | Type     | Description                |
 | :-------- | :------- | :------------------------- |
-| `importFileName` | `string` or `Array<string>` | Name(s) of file(s) that should be removed  |
-| `importName` | `string` or `Array<string>` | If file removed, we can still have imported object in code. Example: `someFunction(ObjectWithTestId.Text)` -> `someFunction(undefined)` |
-| `jsxAttributes` | `string` or `Array<string>` | Name(s) of attribute(s) that should be removed in jsx components. Use can provide array like `['testid', 'buttonTestid', 'textTestid']`  |
+| `importFileNames` | `string` or `Array<string>` | Name(s) of file(s) that should be removed  |
+| `testIdObjects` | `string` or `Array<string>` | If the file is removed, we can still have the imported object in the code. Example: `someFunction(ObjectWithTestId.Text)` -> `someFunction(undefined)`. Now not working with function calls like `func(Obj.func())` |
+| `jsxAttributes` | `string` or `Array<string>` | Name(s) of attribute(s) that should be removed in jsx components. Use can provide an array, for example `['testid', 'buttonTestid', 'textTestid']`  |
 | `objectProperties` | `string` or `Array<string>` | Name(s) of object property(-ies) that should be removed. Example: `someFunction({testid: ObjectWithTestId.Text})` -> `someFunction({})` |
+
+`importNames` and `importFileName` was replaced by `testIdObjects` and `importFileName` in v2.0.0.
 
 ### Usage
 
-Be careful while adding this package directly into your plugins array, besauce your test will failed. Better choose any of this variants:
+Be careful while adding this package directly into your plugin's array, because your test will be failed. Better choose any of these variants:
 - Babel environment configuration:
 ```javascript
     ...,
@@ -48,9 +45,9 @@ Be careful while adding this package directly into your plugins array, besauce y
                 [
                     'babel-plugin-remove-test-id',
                     {
-                        importFileName: 'file-with-test-ids',
-                        importName: 'object-with-test-ids',
-                        jsxAttributes: 'test-id-jsx-attrbiute',
+                        importFileNames: 'file-with-test-ids',
+                        testIdObjects: 'object-with-test-ids',
+                        jsxAttributes: 'test-id-jsx-attribute',
                         objectProperties: 'test-id-property',
                     }
                 ],
@@ -71,9 +68,9 @@ if (process.env.REMOVE_TEST_ID) {
     plugins.push([
         'babel-plugin-remove-test-id',
         {
-            importFileName: 'file-with-test-ids',
-            importName: 'object-with-test-ids',
-            jsxAttributes: 'test-id-jsx-attrbiute',
+            importFileNames: 'file-with-test-ids',
+            testIdObjects: 'object-with-test-ids',
+            jsxAttributes: 'test-id-jsx-attribute',
             objectProperties: 'test-id-property',
         }
     ])
@@ -98,7 +95,7 @@ fs.writeFileSync(
 
 ### Examples
 
-Add your test id property into html tags
+Add your test id property into HTML tags
 ```typescript
 return (
   <div>
@@ -129,6 +126,7 @@ const textObjectPropTestId = TextObjectPropTestId({testid: 'test-id-prop'});
 
 return (
     <View>
+        <TextObjectPropTestId testid={'test-id-jsx-attribute'} />
         {textArgumentTestId}
         {textObjectPropTestId}
     </View>
