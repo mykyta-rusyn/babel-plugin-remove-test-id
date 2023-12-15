@@ -21,8 +21,8 @@ If option not provided this step skipping.
 [
     'babel-plugin-jsx-remove-data-test-id',
     {
-        importFileName: 'file-with-test-ids',
-        importName: 'object-with-test-ids',
+        importFileNames: 'file-with-test-ids',
+        importNames: 'object-with-test-ids',
         jsxAttributes: 'test-id-jsx-attrbiute',
         objectProperties: 'test-id-property',
     }
@@ -30,8 +30,8 @@ If option not provided this step skipping.
 ```
 | Parameter | Type     | Description                |
 | :-------- | :------- | :------------------------- |
-| `importFileName` | `string` or `Array<string>` | Name(s) of file(s) that should be removed  |
-| `importName` | `string` or `Array<string>` | If file removed, we can still have imported object in code. Example: `someFunction(ObjectWithTestId.Text)` -> `someFunction(undefined)` |
+| `importFileNames` | `string` or `Array<string>` | Name(s) of file(s) that should be removed  |
+| `importNames` | `string` or `Array<string>` | If file removed, we can still have imported object in code. Example: `someFunction(ObjectWithTestId.Text)` -> `someFunction(undefined)` |
 | `jsxAttributes` | `string` or `Array<string>` | Name(s) of attribute(s) that should be removed in jsx components. Use can provide array like `['testid', 'buttonTestid', 'textTestid']`  |
 | `objectProperties` | `string` or `Array<string>` | Name(s) of object property(-ies) that should be removed. Example: `someFunction({testid: ObjectWithTestId.Text})` -> `someFunction({})` |
 
@@ -48,8 +48,8 @@ Be careful while adding this package directly into your plugins array, besauce y
                 [
                     'babel-plugin-remove-test-id',
                     {
-                        importFileName: 'file-with-test-ids',
-                        importName: 'object-with-test-ids',
+                        importFileNames: 'file-with-test-ids',
+                        importNames: 'object-with-test-ids',
                         jsxAttributes: 'test-id-jsx-attrbiute',
                         objectProperties: 'test-id-property',
                     }
@@ -71,8 +71,8 @@ if (process.env.REMOVE_TEST_ID) {
     plugins.push([
         'babel-plugin-remove-test-id',
         {
-            importFileName: 'file-with-test-ids',
-            importName: 'object-with-test-ids',
+            importFileNames: 'file-with-test-ids',
+            importNames: 'object-with-test-ids',
             jsxAttributes: 'test-id-jsx-attrbiute',
             objectProperties: 'test-id-property',
         }
@@ -129,6 +129,7 @@ const textObjectPropTestId = TextObjectPropTestId({testid: 'test-id-prop'});
 
 return (
     <View>
+        <TextObjectPropTestId testid={'test-id-jsx-attribute'} />
         {textArgumentTestId}
         {textObjectPropTestId}
     </View>
