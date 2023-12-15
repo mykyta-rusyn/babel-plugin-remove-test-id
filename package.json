@@ -1,6 +1,6 @@
 {
   "name": "babel-plugin-remove-test-id",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "description": "Babel plugin to remove test-id (or any other props) from JSXAttirbutes, object properties, function calls, and file imports",
   "main": "src/index.js",
   "scripts": {
