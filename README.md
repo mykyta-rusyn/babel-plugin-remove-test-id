@@ -30,7 +30,7 @@ If the option is not provided this step is skipped.
 | `jsxAttributes` | `string` or `Array<string>` | Name(s) of attribute(s) that should be removed in jsx components. Use can provide an array, for example `['testid', 'buttonTestid', 'textTestid']`  |
 | `objectProperties` | `string` or `Array<string>` | Name(s) of object property(-ies) that should be removed. Example: `someFunction({testid: ObjectWithTestId.Text})` -> `someFunction({})` |
 
-`importNames` was replaced by `testIdObjects` in v2.0.0.
+`importNames` and `importFileName` was replaced by `testIdObjects` and `importFileName` in v2.0.0.
 
 ### Usage
 
